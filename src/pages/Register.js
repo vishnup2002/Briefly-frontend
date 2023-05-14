@@ -38,15 +38,15 @@ export default function Register() {
         <h5 className="display-6 fw-bold text-body-emphasis  text-center">Signup</h5>
         <form onSubmit={(e)=>submit(e)}>
           <div className="form-group">
-            <label for="inputUsename">Username</label>
+            <label htmlFor="inputUsename">Username</label>
             <input type="username" className="form-control" id="inputUsername" placeholder="Username" onChange={e => setName(e.target.value)}></input>
           </div>
           <div className="form-group">
-            <label for="inputEmail">Email address</label>
+            <label htmlFor="inputEmail">Email address</label>
             <input type="email" className="form-control" id="inputEmail" placeholder="Enter email" onChange={e => setEmail(e.target.value)}></input>
           </div>
           <div className="form-group">
-            <label for="inputPassword">Password</label>
+            <label htmlFor="inputPassword">Password</label>
             <input type="password" className="form-control" id="inputPassword" placeholder="Password" onChange={e => setPassword(e.target.value)}></input>
           </div>
           

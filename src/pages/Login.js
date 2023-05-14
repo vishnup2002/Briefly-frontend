@@ -45,11 +45,11 @@ export default function Login(props) {
         <h5 className="display-6 fw-bold text-body-emphasis  text-center">Login</h5>
         <form onSubmit={(e)=>submit(e)}>
           <div className="form-group">
-            <label for="inputEmail">Email address</label>
+            <label htmlFor="inputEmail">Email address</label>
             <input type="email" className="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email" onChange={e => setEmail(e.target.value)}></input>
           </div>
           <div className="form-group">
-            <label for="inputPassword">Password</label>
+            <label htmlFor="inputPassword">Password</label>
             <input type="password" className="form-control" id="inputPassword" placeholder="Password" onChange={e => setPassword(e.target.value)}></input>
           </div>
           <div className="d-flex flex-wrap justify-content-evenly pt-3">

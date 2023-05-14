@@ -1,6 +1,7 @@
 import './App.css'
 import {BrowserRouter, Route, Routes} from "react-router-dom"
-import React, {useEffect, useState} from 'react';
+// import {useEffect} from 'react';
+import React, {useState} from 'react';
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Create from './pages/Create'
@@ -9,33 +10,54 @@ import About from './pages/About'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Details from './pages/Details'
+// import axios from 'axios';
 
 
 function App() {
 
   const [name, setName] = useState('');
 
-  useEffect(() => {
-    (
-        async () => {
-            const response = await fetch('http://localhost:8000/user/user', {
-                headers: {'Content-Type': 'application/json'},
-                credentials: 'include',
-            });
+//   useEffect(() => {
+//     (
+//         async () => {
+//             const response = await fetch('http://localhost:8000/user/user', {
+//                 headers: {'Content-Type': 'application/json'},
+//                 credentials: 'include',
+//             });
 
-            const content = await response.json();
-            console.log(content);
+//             const content = await response.json();
+//             console.log(content);
 
-            if (content.hasOwnProperty("name")) {
-              setName(content.name);
-            }
-            else{
-              console.log("name not present")
-            }
+//             if (content.hasOwnProperty("name")) {
+//               setName(content.name);
+//             }
+//             else{
+//               console.log("name not present")
+//             }
             
-        }
-    )();
-});
+//         }
+//     )();
+// });
+
+//   useEffect(() => {
+//   (
+//     async () => {
+//       try{
+//       const response = await axios.get('http://localhost:8000/user/user',{withCredentials: true})
+//       console.log(response.data)
+//       if(response){
+//         console.log('response present')
+//       }
+//       else{
+//         console.log('not present')
+//       }
+//       }catch (error) {
+//         console.error(error.message);
+//         console.log('hello form error !')
+//       }
+//     }
+//   )();
+// });
 
   return (
     <div>

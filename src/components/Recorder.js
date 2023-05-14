@@ -1,71 +1,109 @@
-import axios from "axios";
-import Recorder from 'recorder-js';
+import React, { useRef, useState } from "react";
 
-let gumStream = null;
-let recorder = null;
-let audioContext = null;
+function Recorder(props) {
+  const previewRef = useRef(null);
+  const recordingRef = useRef(null);
+  const startButtonRef = useRef(null);
+  const stopButtonRef = useRef(null);
+  const downloadButtonRef = useRef(null);
 
-function RecorderJSDemo() {
+  const[recdata,setRecdata] = useState(new Blob())
 
-    const startRecording = () => {
-        let constraints = {
-            audio: true,
-            video: false
-        }
+  const [recorder, setRecorder] = useState(null);
+  const recordingTimeMS = 500000;
 
-        audioContext = new window.AudioContext();
-        console.log("sample rate: " + audioContext.sampleRate);
+  function startRecording(stream, lengthInMS) {
+    const newRecorder = new MediaRecorder(stream);
+    setRecorder(newRecorder);
 
-        navigator.mediaDevices
-            .getUserMedia(constraints)
-            .then(function (stream) {
-                console.log("initializing Recorder.js ...");
+    const data = [];
 
-                gumStream = stream;
+    newRecorder.ondataavailable = (event) => data.push(event.data);
+    newRecorder.start();
+    console.log(`${newRecorder.state} for ${lengthInMS / 1000} seconds…`);
 
-                let input = audioContext.createMediaStreamSource(stream);
+    const stopped = new Promise((resolve, reject) => {
+      newRecorder.onstop = resolve;
+      newRecorder.onerror = (event) => reject(event.name);
+    });
 
-                recorder = new window.Recorder(input, {
-                    numChannels: 1
-                })
+    return Promise.all([stopped]).then(() => data);
+  }
 
-                recorder.record();
-                console.log("Recording started");
-            }).catch(function (err) {
-                //enable the record button if getUserMedia() fails
+  function stop(stream) {
+    stream.getTracks().forEach((track) => track.stop());
+  }
+
+
+
+  function handleStartButtonClick() {
+    navigator.mediaDevices
+      .getUserMedia({
+        audio: true,
+      })
+      .then((stream) => {
+        previewRef.current.srcObject = stream;
+        downloadButtonRef.current.href = stream;
+        previewRef.current.captureStream =
+          previewRef.current.captureStream || previewRef.current.mozCaptureStream;
+        return new Promise((resolve) => (previewRef.current.onplaying = resolve));
+      })
+      .then(() => startRecording(previewRef.current.captureStream(), recordingTimeMS))
+      .then((recordedChunks) => {
+        const recordedBlob = new Blob(recordedChunks, {
+          type: "audio/wav",
         });
+        setRecdata(recordedBlob)
+        recordingRef.current.src = URL.createObjectURL(recordedBlob);
+        downloadButtonRef.current.href = recordingRef.current.src;
+        downloadButtonRef.current.download = "Recorded.wav";
 
-    }
-
-    const stopRecording = () => {
-        console.log("stopButton clicked");
-
-        recorder.stop(); //stop microphone access
-        gumStream.getAudioTracks()[0].stop();
-
-        recorder.exportWAV(onStop);
-    }
-
-    const onStop = (blob) => {
-        console.log("uploading...");
-
-        let data = new FormData();
-
-        data.append('text', "this is the transcription of the audio file");
-        data.append('wavfile', blob, "recording.wav");
-
-        const config = {
-            headers: {'content-type': 'multipart/form-data'}
+        console.log(
+          `Successfully recorded ${recordedBlob.size} bytes of ${recordedBlob.type} media.`
+        );
+      })
+      .catch((error) => {
+        if (error.name === "NotFoundError") {
+          console.log("Camera or microphone not found. Can't record.");
+        } else {
+          console.log(error);
         }
-        axios.post('http://localhost:8080/asr/', data, config);
-    }
+      });
+  }
 
-    return (
+  function handleStopButtonClick() {
+    stop(previewRef.current.srcObject);
+    recorder.stop();
+  }
+
+  function generateSummary(){
+    console.log('Summary to be generated here ')
+    console.log(recdata, props['mname'], props['mdesc'], props['mdate'])
+  }
+
+  return (
+    <div className="d-flex justify-content-center ">
         <div>
-            <button onClick={startRecording} type="button">Start</button>
-            <button onClick={stopRecording} type="button">Stop</button>
+          <button ref={startButtonRef} className="btn btn-outline-success m-4" onClick={handleStartButtonClick}>
+            Start Recording
+          </button>
+          <video ref={previewRef} width="0" height="0" autoPlay muted></video>
         </div>
-    );
+        <div>
+          <button ref={stopButtonRef} className="btn btn-outline-danger m-4" onClick={handleStopButtonClick}>
+            Stop Recording
+          </button>
+        </div>
+        <video ref={recordingRef} className='pb-5 ' width="160" height="120" controls></video>
+        <div><button className="btn btn-outline-info m-4" ref={downloadButtonRef} >Download</button></div>
+        <div>
+          <button className="btn btn-primary m-4" onClick={generateSummary}>
+            Generate Summary
+          </button>
+        </div>
+    </div>
+  );
 }
 
-export default RecorderJSDemo;
+export default Recorder
+

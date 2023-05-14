@@ -18,14 +18,14 @@ export default function Home(props) {
   return (
     <div>
 
-    <div className="container col-xxl-8 px-4 py-5" >
+    <div className="container col-xxl-8 px-4 py-5 " >
       <div className="row flex-lg-row-reverse align-items-center g-5 py-5">
         <div className="col-10 col-sm-8 col-lg-6">
           <img src = {image} className="d-block mx-lg-auto img-fluid" alt="meetingImage" width="700" height="500" loading="lazy"></img>
         </div>
         <div className="col-lg-6">
-          <h1 className="display-5 fw-bold text-body-emphasis lh-1 mb-3">Responsive left-aligned hero with image</h1>
-          <p className="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+          <h1 className="display-5 fw-bold text-body-emphasis lh-1 mb-3">Minutes made simple. Meetings made easy.</h1>
+          <p className="lead">Effortlessly organize your meetings with accurate minutes - all in one place!Revolutionize your meeting notes with our simple, yet powerful tool.The ultimate solution for stress-free meeting minutes...</p>
           <div className="d-grid gap-2 d-md-flex justify-content-md-start">
             <button type="button" className="btn btn-primary btn-lg px-4 me-md-2" onClick={gotofunction} >{props.name ? 'Get Started ':'Login to Continue'}</button>
             <button type="button" className="btn btn-outline-secondary btn-lg px-4" onClick={gotoabout}>More...</button>
@@ -34,32 +34,38 @@ export default function Home(props) {
       </div>
     </div>
 
-    <div className="container px-4 py-5" id="featured-3">
-      <h2 className="pb-2 border-bottom">Columns with icons</h2>
+    <div className="container px-4 " id="featured-3">
+      <h2 className="pb-2 border-bottom">Features:</h2>
       <div className="row g-4 py-5 row-cols-1 row-cols-lg-3">
         <div className="feature col">
           
-          <h3 className="fs-2">Featured title</h3>
-          <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-          <a href="https://www.google.com" target="_blank" className="icon-link">
-            Call to action
-          </a>
+          <h4 className="fs-4">Automated Minute-Taking</h4>
+          <p>Our platform makes minute-taking a breeze. Simply start the meeting, and our software will automatically record and transcribe everything said, allowing you to focus on the discussion instead of note-taking.</p>
         </div>
         <div className="feature col">
           
-          <h3 className="fs-2">Featured title</h3>
-          <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-          <a href="https://www.google.com" target="_blank" className="icon-link">
-            Call to action
-          </a>
+          <h4 className="fs-4">Easy Organization</h4>
+          <p>With our platform, all your minutes are organized and easily accessible in one place. You can sort them by date, project, or any other criteria, and quickly search through them using keywords.</p>
         </div>
         <div className="feature col">
           
-          <h3 className="fs-2">Featured title</h3>
-          <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-          <a href="https://www.google.com" target="_blank" className="icon-link">
-            Call to action
-          </a>
+          <h4 className="fs-4">Secure Storage</h4>
+          <p>We understand the importance of confidentiality and security, which is why we provide secure storage for all your meeting minutes. You can access your minutes anywhere, anytime, and from any device, without worrying about data breaches.</p>
+        </div>
+        <div className="feature col">
+          
+          <h4 className="fs-4">Analytics and Insights</h4>
+          <p>Our platform provides analytics and insights on meeting minutes, such as attendance, action items, and discussion topics, helping you to identify trends, measure progress, and make data-driven decisions.</p>
+        </div>
+        <div className="feature col">
+          
+          <h4 className="fs-4">Customer Support</h4>
+          <p>Our platform offers dedicated customer support to help you with any questions or issues you may have. Our support team is available via chat, email, or phone, ensuring that you always have someone to turn to.</p>
+        </div>
+        <div className="feature col">
+          
+          <h4 className="fs-4">Export and Share</h4>
+          <p>Our platform allows you to export and share meeting minutes in a variety of formats, such as PDF, Word, or HTML, making it easy to share with stakeholders, team members, or clients.</p>
         </div>
       </div>
     </div>
