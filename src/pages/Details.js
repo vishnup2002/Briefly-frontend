@@ -22,6 +22,7 @@ export default function Details() {
     }
 
     const { id } = useParams();
+    console.log('details of meeting', id)
     return (
         <div>
 

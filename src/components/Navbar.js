@@ -26,8 +26,6 @@ export default function Navbar(props) {
 
 let menu;
 
-console.log("from nav bar")
-console.log(props.name)
 
 if (props.name === '') {
   menu = (

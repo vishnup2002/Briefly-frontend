@@ -79,6 +79,7 @@ function Recorder(props) {
   function generateSummary(){
     console.log('Summary to be generated here ')
     console.log(recdata, props['mname'], props['mdesc'], props['mdate'])
+    
   }
 
   return (

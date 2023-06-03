@@ -10,12 +10,13 @@ export default function Register() {
   const [email,setEmail] = useState('')
   const [password,setPassword] = useState('')
   const [redirect,setRedirect] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const submit = async (e) => {
     e.preventDefault();
     console.log({name,email,password})
 
-    await fetch('http://localhost:8000/user/register', {
+    const response = await fetch('http://localhost:8000/user/register', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -25,11 +26,18 @@ export default function Register() {
             })
         });
 
-    setRedirect(true)
+      const content = await response.json();
+      console.log(content);
+      if(content.hasOwnProperty('error')){
+        setErrorMessage(content.error);
+      }
+      else{
+        setRedirect(true)
+      }    
   }
 
   if(redirect){
-    navigate('/');
+    navigate('/login');
   }
 
   return (
@@ -54,7 +62,8 @@ export default function Register() {
             <div>
               <button type="submit" className="btn btn-primary ">Sign in</button>
             </div>
-          </div>  
+          </div>
+          {errorMessage && <div className="alert alert-danger text-center mt-3" role="alert">{errorMessage}</div>}  
         </form>
       </div>
     </div>

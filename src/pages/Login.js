@@ -13,6 +13,7 @@ export default function Login(props) {
   const [email,setEmail] = useState('')
   const [password,setPassword] = useState('')
   const [redirect,setRedirect] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const submit = async (e) => {
     e.preventDefault();
@@ -29,9 +30,14 @@ export default function Login(props) {
         });
 
         const content = await response.json();
-        console.log(content);
-        props.setName(content.name);
-        setRedirect(true);
+        if(content.hasOwnProperty('name')){
+          props.setName(content.name);
+          setRedirect(true);
+        }
+        if(content.hasOwnProperty('detail')){
+          setErrorMessage(content.detail);
+        }
+        
   }
 
   if(redirect){
@@ -46,7 +52,7 @@ export default function Login(props) {
         <form onSubmit={(e)=>submit(e)}>
           <div className="form-group">
             <label htmlFor="inputEmail">Email address</label>
-            <input type="email" className="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email" onChange={e => setEmail(e.target.value)}></input>
+            <input type="email" className="form-control" id="inputEmail"  placeholder="Enter email" onChange={e => setEmail(e.target.value)}></input>
           </div>
           <div className="form-group">
             <label htmlFor="inputPassword">Password</label>
@@ -59,7 +65,8 @@ export default function Login(props) {
             <div>
               <button type="button" onClick={navigateToRegister} className="btn btn btn-outline-primary ">Sign in</button>
             </div>
-          </div>  
+          </div>
+          {errorMessage && <div className="alert alert-danger text-center mt-3" role="alert">{errorMessage}</div>}
         </form>
       </div>
     </div>
