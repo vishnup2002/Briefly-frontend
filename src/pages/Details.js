@@ -3,12 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 
 export default function Details() {
   const [visible, setVisible] = useState(false);
+  const [bdata,setbdata] = useState([])
   const [msummary, setMsummary] = useState("Original meeting summary");
   const navigate = useNavigate();
-
+  
   function handleDelete() {
     console.log("delete the meeting and goto dashboard");
-    fetch(`http://localhost:8000/dashboard/${id}/edit`, {
+    fetch(`http://localhost:8000/user/dashboard/${id}/edit`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -31,7 +32,7 @@ export default function Details() {
   function saveDetails() {
     console.log("post the meeting here");
     console.log(msummary);
-    fetch(`http://localhost:8000/dashboard/${id}/edit`, {
+    fetch(`http://localhost:8000/user/dashboard/${id}/edit`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -41,7 +42,6 @@ export default function Details() {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         setMsummary(msummary);
       });
 
@@ -52,7 +52,7 @@ export default function Details() {
   console.log("details of meeting", id);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/dashboard/${id}`, {
+    fetch(`http://localhost:8000/user/dashboard/${id}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -62,7 +62,8 @@ export default function Details() {
       })
       .then((data) => {
         console.log(data);
-        setMsummary(data);
+        setbdata(data);
+        setMsummary(data.summary);
       });
   }, []);
 
@@ -70,24 +71,17 @@ export default function Details() {
     <div>
       <div className="bg-light text-secondary container shadow shadow-lg rounded px-4 py-5 text-center mt-5">
         <div className="py-4">
-          <h1 className="display-5 fw-bold text-dark">Meeting Name</h1>
+          <h1 className="display-5 fw-bold text-dark">{bdata.name}</h1>
           <p className="fs-5 mb-4 pe-5 d-flex justify-content-end">
             Date: 27/05/2023
           </p>
           <h4 className="ps-5">
-            "Meeting Desc": Lorem ipsum dolor sit amet consectetur, adipisicing
-            elit. Minima, itaque? Consequatur ad quasi ipsam exercitationem fuga
-            facilis harum autem cupiditate! Architecto earum soluta ducimus
-            dolore quam, aliquid veritatis possimus facere.
+            "Meeting Desc : {bdata.description}" 
           </h4>
           <hr />
           <div className="col-lg-6 mx-auto">
             <p className="fs-5 mb-4">
-              "Meeting Summary: "Quickly design and customize responsive
-              mobile-first sites with Bootstrap, the world’s most popular
-              front-end open source toolkit, featuring Sass variables and
-              mixins, responsive grid system, extensive prebuilt components, and
-              powerful JavaScript plugins.
+              "Meeting Summary: {bdata.summary}" 
             </p>
             <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
               <button
@@ -115,7 +109,7 @@ export default function Details() {
                   <textarea
                     className="form-control focus-ring focus-ring-light"
                     aria-label="With textarea"
-                    defaultValue="Original meeting summary"
+                    defaultValue={bdata.summary}
                     onChange={(e) => setMsummary(e.target.value)}
                   ></textarea>
                 </div>

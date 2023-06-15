@@ -44,7 +44,8 @@ export default function Create(props) {
 
 
 
-  function handleStartButtonClick() {
+  function handleStartButtonClick(e) {
+    e.preventDefault();
     navigator.mediaDevices
       .getUserMedia({
         audio: true,
@@ -79,7 +80,8 @@ export default function Create(props) {
       });
   }
 
-  function handleStopButtonClick() {
+  function handleStopButtonClick(e) {
+    e.preventDefault();
     stop(previewRef.current.srcObject);
     recorder.stop();
   }
@@ -102,10 +104,34 @@ export default function Create(props) {
     setFile(selectedFile);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('Summary to be generated here ')
-    console.log(file,recdata,mname,mdesc,mdate)
+    console.log(file,recdata,mname,mdesc,mdate);
+    console.log('Summary to be generated here ')
+    console.log(recdata,mname,mdesc,mdate)
+    async function sendData() {
+      console.log("hello");
+      const formData = new FormData();
+      isActive.id ==='divOne' ? formData.append('audio', recdata) : formData.append('audio', file);
+      // formData.append('audio', recdata);
+      formData.append('meetingName',mname);
+      formData.append('meetingDesc',mdesc);
+      formData.append('meetingDate',mdate);
+
+
+      const response = await fetch('http://localhost:8000/user/logic', {
+        method: 'POST',
+        body: formData,
+        credentials : 'include'
+      });
+
+      
+
+
+    }
+    console.log("hello");
+    await sendData();
   };
 
 

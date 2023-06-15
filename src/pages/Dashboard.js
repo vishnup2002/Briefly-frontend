@@ -23,7 +23,7 @@ export default function Dashboard() {
   const [meetings, setMeetings] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/dashboard", {
+    fetch("http://localhost:8000/user/dashboard", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -53,9 +53,9 @@ export default function Dashboard() {
               to={`/meetings/${meetings.id}`}
               className="ps-5 fs-5  px-2 text-dark"
             >
-              {meetings.meetingName}
+              {meetings.name}
             </Link>
-            <span className="pe-5 fs-5">{meetings.date}</span>
+            <span className="pe-5 fs-5">{meetings.pub_date}</span>
           </div>
         ))}
       </div>
