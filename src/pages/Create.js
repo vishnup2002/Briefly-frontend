@@ -40,7 +40,10 @@ export default function Create(props) {
     stream.getTracks().forEach((track) => track.stop());
   }
 
-  function handleStartButtonClick() {
+
+
+  function handleStartButtonClick(e) {
+    e.preventDefault();
     navigator.mediaDevices
       .getUserMedia({
         audio: true,
@@ -80,7 +83,8 @@ export default function Create(props) {
       });
   }
 
-  function handleStopButtonClick() {
+  function handleStopButtonClick(e) {
+    e.preventDefault();
     stop(previewRef.current.srcObject);
     recorder.stop();
   }
@@ -105,11 +109,50 @@ export default function Create(props) {
     setFile(selectedFile);
   };
 
-  const handleSubmit = (event) => {
+  function validateFile(event) {
+    const fileInput = event.target;
+    console.log(fileInput);
+    const file = fileInput.files[0];
+    console.log(file);
+    const allowedExtensions = /(\.wav)$/i;
+  
+    if (!allowedExtensions.exec(file.name)) {
+      alert('Please select a .wav file.');
+      fileInput.value = '';
+      return false;
+    }
+  }
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log('Summary to be generated here ')
+    console.log(file,recdata,mname,mdesc,mdate);
+    console.log('Summary to be generated here ')
+    console.log(recdata,mname,mdesc,mdate)
+    async function sendData() {
+      console.log("hello");
+      const formData = new FormData();
+      isActive.id ==='divOne' ? formData.append('audio', recdata) : formData.append('audio', file);
+      // formData.append('audio', recdata);
+      formData.append('meetingName',mname);
+      formData.append('meetingDesc',mdesc);
+      formData.append('meetingDate',mdate);
+
+
+      const response = await fetch('http://localhost:8000/user/logic', {
+        method: 'POST',
+        body: formData,
+        credentials : 'include'
+      });
+    }
+
+    console.log("hello");
+    await sendData();
     console.log("Summary to be generated here ");
     console.log(file, recdata, mname, mdesc, mdate);
   };
+
+  
 
   const yyyy = new Date().getFullYear();
   const mm = String(new Date().getMonth() + 1).padStart(2, "0");
@@ -249,10 +292,12 @@ export default function Create(props) {
                   </label>
                   <input
                     type="file"
+                    accept=".wav"
                     className="form-control-file"
                     id="fileUpload"
                     name="fileUpload"
                     onChange={handleFileChange}
+                    onInput={(e)=>{validateFile(e)}}
                   />
                 </div>
               </div>

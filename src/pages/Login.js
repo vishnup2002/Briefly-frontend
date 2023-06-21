@@ -52,7 +52,7 @@ export default function Login(props) {
         <form onSubmit={(e)=>submit(e)}>
           <div className="form-group">
             <label htmlFor="inputEmail">Email address</label>
-            <input type="email" className="form-control" id="inputEmail"  placeholder="Enter email" onChange={e => setEmail(e.target.value)}></input>
+            <input type="text" className="form-control" id="inputEmail"  placeholder="Enter email" onChange={e => setEmail(e.target.value)}></input>
           </div>
           <div className="form-group">
             <label htmlFor="inputPassword">Password</label>
