@@ -109,6 +109,20 @@ export default function Create(props) {
     setFile(selectedFile);
   };
 
+  function validateFile(event) {
+    const fileInput = event.target;
+    console.log(fileInput);
+    const file = fileInput.files[0];
+    console.log(file);
+    const allowedExtensions = /(\.wav)$/i;
+  
+    if (!allowedExtensions.exec(file.name)) {
+      alert('Please select a .wav file.');
+      fileInput.value = '';
+      return false;
+    }
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('Summary to be generated here ')
@@ -130,16 +144,15 @@ export default function Create(props) {
         body: formData,
         credentials : 'include'
       });
-
-      
-
-
     }
+
     console.log("hello");
     await sendData();
     console.log("Summary to be generated here ");
     console.log(file, recdata, mname, mdesc, mdate);
   };
+
+  
 
   const yyyy = new Date().getFullYear();
   const mm = String(new Date().getMonth() + 1).padStart(2, "0");
@@ -279,10 +292,12 @@ export default function Create(props) {
                   </label>
                   <input
                     type="file"
+                    accept=".wav"
                     className="form-control-file"
                     id="fileUpload"
                     name="fileUpload"
                     onChange={handleFileChange}
+                    onInput={(e)=>{validateFile(e)}}
                   />
                 </div>
               </div>
